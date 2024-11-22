@@ -1,0 +1,92 @@
+﻿@model List<PROGPOE1.Models.EmployeeViewModel>
+@{
+    ViewData["Title"] = "Claim Details";
+    var successMessage = TempData["successMessage"]?.ToString();
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<!-- Display Success Message -->
+@if (!string.IsNullOrWhiteSpace(successMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> @successMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Display Error Message -->
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> @errorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<hr />
+
+<!-- Employee Table -->
+<table class="table table-responsive table-hover table-bordered">
+    <thead>
+        <tr class="table-active">
+            <th class="text-center">Id</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Date of Birth</th>
+            <th class="text-center">E-mail</th>
+            <th class="text-center">Hours Worked</th>
+            <th class="text-center">Hourly Rate</th>
+            <th class="text-center">Salary</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td class="text-center">@employee.Id</td>
+                    <td>@employee.FullName</td>
+                    <td class="text-center">@employee.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                    <td>@employee.Email</td>
+                    <td class="text-center">@employee.HoursWorked</td>
+                    <td class="text-center">@employee.HourlyRate</td>
+                    <td class="text-end">@employee.Salary.ToString("C")</td>
+                    <td class="text-center">@employee.Status</td>
+                    <td class="text-center">
+                        @if (string.IsNullOrWhiteSpace(employee.Status) || employee.Status == "Pending")
+                        {
+                            <div class="btn-group btn-group-sm">
+                                <form asp-action="Accept" asp-controller="Employee" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@employee.Id" />
+                                    <button type="submit" class="btn btn-success">Accept</button>
+                                </form>
+                                <form asp-action="Reject" asp-controller="Employee" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@employee.Id" />
+                                    <button type="submit" class="btn btn-danger">Reject</button>
+                                </form>
+                                <form asp-action="Edit" asp-controller="Employee" method="get" style="display:inline;">
+                                    <input type="hidden" name="id" value="@employee.Id" />
+                                    <button type="submit" class="btn btn-warning">Edit</button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">@employee.Status</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center">No employees available at this moment!</td>
+            </tr>
+        }
+    </tbody>
+</table>
