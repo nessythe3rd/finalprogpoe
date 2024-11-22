@@ -17,6 +17,6 @@ namespace PROGPOE1.Models.DBEntities
         public double HoursWorked { get; set; }
         public double HourlyRate { get; set; }
         public double Salary { get; set; }
-        public string Status { get; set; } // New property for status
+        public string Status { get; set; } 
     }
 }
