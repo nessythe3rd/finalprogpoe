@@ -11,7 +11,7 @@ namespace PROGPOE1.Models.DBEntities
 
         [Column(TypeName = "varchar(50)")]
         public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string LastNam { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public double HoursWorked { get; set; }
